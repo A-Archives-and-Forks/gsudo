@@ -162,17 +162,13 @@ namespace gsudo.Helpers
                 if (WindowsIdentity.GetCurrent().IsSystem)
                 {
                     // Already SYSTEM: directly obtain the TrustedInstaller token and start the service with it.
-                    using (ProcessFactory.StartAsTrustedInstaller(ownExe, commandLine, Environment.CurrentDirectory, !InputArguments.Debug))
-                    {
-                    }
+                    ret = ProcessFactory.StartAsTrustedInstaller(ownExe, commandLine, Environment.CurrentDirectory, !InputArguments.Debug);
                 }
                 else
                 {
                     // Elevated admin (not yet SYSTEM): start as SYSTEM first.
                     // The SYSTEM-level gsudo will detect it is not TrustedInstaller and call StartAsTrustedInstaller.
-                    using (ProcessFactory.StartAsSystem(ownExe, commandLine, Environment.CurrentDirectory, !InputArguments.Debug))
-                    {
-                    }
+                    ret = ProcessFactory.StartAsSystem(ownExe, commandLine, Environment.CurrentDirectory, !InputArguments.Debug);
                 }
             }
             else if (InputArguments.RunAsSystem && isAdmin)
